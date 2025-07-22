@@ -12,8 +12,7 @@ GameObject:
   - component: {fileID: 4061313435562099707}
   - component: {fileID: 8797314294017403155}
   - component: {fileID: 3610595947692216116}
-  - component: {fileID: 3549923933235576072}
-  - component: {fileID: 2708027967060734975}
+  - component: {fileID: 7569543062498790687}
   m_Layer: 0
   m_Name: Enemy_2
   m_TagString: Enemy
@@ -137,8 +136,8 @@ MonoBehaviour:
   enemyBulletPrefab: {fileID: 6576029860682959593, guid: 9f31b92f9ae301d47a0b8379492ae264, type: 3}
   bulletSpawnPoint: {fileID: 4705606430147703698}
   enemyFireDelay: 0.4
---- !u!61 &3549923933235576072
-BoxCollider2D:
+--- !u!58 &7569543062498790687
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -167,68 +166,12 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.008877456, y: 0.05674067}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.45698926, y: 0.5}
-    oldSize: {x: 1.86, y: 1.44}
-    newSize: {x: 1.86, y: 1.44}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 1.7593247, y: 0.5778586}
-  m_EdgeRadius: 0
---- !u!61 &2708027967060734975
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 461341101278608393}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: -0.0012636781, y: -0.0073118806}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.45698926, y: 0.5}
-    oldSize: {x: 1.86, y: 1.44}
-    newSize: {x: 1.86, y: 1.44}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 0.48426485, y: 1.1911432}
-  m_EdgeRadius: 0
+  m_Offset: {x: -0.0018603802, y: 0.05330807}
+  m_Radius: 0.17612131
 --- !u!1 &1540721942793318534
 GameObject:
   m_ObjectHideFlags: 0
