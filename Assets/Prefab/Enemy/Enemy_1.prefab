@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7253247651778610611}
   - component: {fileID: 5228760175680724875}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ship1-lines
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 3522928732153988596}
   - component: {fileID: 6531435965958646995}
   - component: {fileID: 3497294731291205328}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Enemy_1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -118,12 +118,12 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -6.35, y: 1.42, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 5548486362945956381}
   - {fileID: 7253247651778610611}
   - {fileID: 2186614540681046737}
-  - {fileID: 5548486362945956381}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8912185584662270001
@@ -223,8 +223,15 @@ MonoBehaviour:
   enemyHealth: 12
   explosionEffectPrefab: {fileID: 725748389856807714, guid: 4bda94453d2ca7444a0fff05b2d425f5, type: 3}
   enemyBulletPrefab: {fileID: 6798610446988078174, guid: 3412d185171bcd649a794764e65e0d2d, type: 3}
-  bulletSpawnPoint: {fileID: 5548486362945956381}
+  dropItemPrefab: {fileID: 820506492106638615, guid: 90542482164ea0047a9b6dbf24286c36, type: 3}
   enemyFireDelay: 0.1
+  predictionTime: 1
+  isDropItem: 0
+  bulletSpawnPoint: {fileID: 5548486362945956381}
+  moveSpeed: 2
+  rotationSpeed: 50
+  screenBoundsPadding: 0.5
+  spawnManager: {fileID: 0}
 --- !u!61 &6531435965958646995
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -326,7 +333,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2186614540681046737}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Flame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -358,7 +365,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5548486362945956381}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BulletSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -391,7 +398,7 @@ GameObject:
   - component: {fileID: 1467543387541510999}
   - component: {fileID: 1873760370062636856}
   - component: {fileID: 8789134303030629215}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FlameSmall
   m_TagString: Untagged
   m_Icon: {fileID: 0}

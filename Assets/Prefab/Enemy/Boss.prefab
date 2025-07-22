@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2037038277771063743}
   - component: {fileID: 940915079695858303}
   - component: {fileID: 4384249093104263241}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Boss
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.69, y: 1.31, z: 0}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 1}
+  m_LocalScale: {x: 1.8, y: 1.8, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1671424951052365028}
@@ -135,8 +135,15 @@ MonoBehaviour:
   enemyHealth: 12
   explosionEffectPrefab: {fileID: 725748389856807714, guid: bad7a80af8de6a6448fc3187d2d3633f, type: 3}
   enemyBulletPrefab: {fileID: 2508814619514582746, guid: ae98dba45c096f84586875802cc273d1, type: 3}
-  bulletSpawnPoint: {fileID: 4562154699439123488}
+  dropItemPrefab: {fileID: 820506492106638615, guid: 90542482164ea0047a9b6dbf24286c36, type: 3}
   enemyFireDelay: 0.6
+  predictionTime: 0.5
+  isDropItem: 0
+  bulletSpawnPoint: {fileID: 4562154699439123488}
+  moveSpeed: 2
+  rotationSpeed: 50
+  screenBoundsPadding: 0.5
+  spawnManager: {fileID: 0}
 --- !u!61 &940915079695858303
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -240,7 +247,7 @@ GameObject:
   - component: {fileID: 1671424951052365028}
   - component: {fileID: 8229536030503158919}
   - component: {fileID: 8295535035503394786}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FlameSmall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -348,7 +355,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4562154699439123488}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BulletSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

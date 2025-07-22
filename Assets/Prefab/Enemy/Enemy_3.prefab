@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2757956284242318125}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BulletSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4142564490102904235}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Flame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77,7 +77,7 @@ GameObject:
   - component: {fileID: 6823993873082465327}
   - component: {fileID: 7643683777974687731}
   - component: {fileID: 3096912072893645995}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Enemy_3
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -199,8 +199,15 @@ MonoBehaviour:
   enemyHealth: 12
   explosionEffectPrefab: {fileID: 725748389856807714, guid: 4bda94453d2ca7444a0fff05b2d425f5, type: 3}
   enemyBulletPrefab: {fileID: 6798610446988078174, guid: 3412d185171bcd649a794764e65e0d2d, type: 3}
-  bulletSpawnPoint: {fileID: 2757956284242318125}
+  dropItemPrefab: {fileID: 820506492106638615, guid: 90542482164ea0047a9b6dbf24286c36, type: 3}
   enemyFireDelay: 0.2
+  predictionTime: 0.5
+  isDropItem: 0
+  bulletSpawnPoint: {fileID: 2757956284242318125}
+  moveSpeed: 2
+  rotationSpeed: 50
+  screenBoundsPadding: 0.5
+  spawnManager: {fileID: 0}
 --- !u!58 &7643683777974687731
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -293,7 +300,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4826668735657737831}
   - component: {fileID: 6862518796949048910}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ship2-lines
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -381,7 +388,7 @@ GameObject:
   - component: {fileID: 7608710088009893719}
   - component: {fileID: 8929984779772336693}
   - component: {fileID: 4771294154249704878}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FlameSmall
   m_TagString: Untagged
   m_Icon: {fileID: 0}

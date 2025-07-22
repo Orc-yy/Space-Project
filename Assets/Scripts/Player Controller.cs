@@ -1,27 +1,40 @@
 using System.Collections;
 using UnityEngine;
+
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]
     private Rigidbody2D rigid;
     [SerializeField]
     private float moveSpeed;
+
     public GameObject explosionEffectPrefab;
     public GameObject bulletPrefab;
+
     public Transform bulletSpawnPoint;
+
+    public EnemySpawnManager enemySpawnManager;
+
     public float bulletFireDelay;
     public float playerHealth;
     private float playerCurrentHealth;
+    public float level;
+
+
     void Start()
     {
         rigid = gameObject.GetComponent<Rigidbody2D>();
         playerCurrentHealth = playerHealth;
         StartCoroutine(AutoFireBullet());
     }
+
+
     void Update()
     {
         Move();
     }
+
+
     private void Move()
     {
         float x = Input.GetAxisRaw("Horizontal");
@@ -29,6 +42,8 @@ public class PlayerController : MonoBehaviour
         Vector2 moveDirection = new Vector2(x, y).normalized;
         rigid.linearVelocity = moveDirection * moveSpeed;
     }
+
+
     public void TakeDamage(float damage)
     {
         playerCurrentHealth -= damage;
@@ -38,12 +53,29 @@ public class PlayerController : MonoBehaviour
             Die();
         }
     }
+
+
     private void Die()
     {
         GameObject effect = Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);
         Destroy(effect, 2f);
+
+        if (enemySpawnManager != null)
+        {
+            enemySpawnManager.isPlayerAlive = false;
+        }
+
         Destroy(gameObject);
     }
+
+
+    public void LevelUp()
+    {
+        level++;
+        Debug.Log("플레이어 레벨 1 상승 ! 현재 레벨 : " + level);
+    }
+
+
     private IEnumerator AutoFireBullet()
     {
         while (true)

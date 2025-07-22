@@ -1,12 +1,17 @@
 using UnityEngine;
+
 public class EnemyBulletController : MonoBehaviour
 {
     public float enemyBulletSpeed;
     public float enemyBulletDamage;
+
+
     void Update()
     {
-        transform.Translate(Vector3.down * enemyBulletSpeed * Time.deltaTime);
+        transform.position += -transform.up * enemyBulletSpeed * Time.deltaTime;
     }
+
+
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
@@ -19,6 +24,8 @@ public class EnemyBulletController : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+
     void OnBecameInvisible()
     {
         Destroy(gameObject);
