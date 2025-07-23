@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq; // Linq 사용을 위해 추가
 using UnityEngine;
 
 public class EnemySpawnManager : MonoBehaviour
@@ -17,11 +18,9 @@ public class EnemySpawnManager : MonoBehaviour
     public int maxStage = 10;
     public int maxAliveEnemies = 10;
 
-    private int aliveEnemies = 0; // 현재 스테이지에 살아있는 적의 수
-    private int enemySpawnedThisStage = 0; // 해당 스테이지에서 생성된 적의 수
-    private int enemyToSpawnThisStage = 0; // 해당 스테이지에 생성할 적의 수
-
-    private List<GameObject> currentStageEnemies = new List<GameObject>();
+    private int aliveEnemies = 0;
+    private int enemySpawnedThisStage = 0;
+    private int enemyToSpawnThisStage = 0;
 
     public bool isPlayerAlive = true;
 
@@ -47,115 +46,115 @@ public class EnemySpawnManager : MonoBehaviour
         StartStage(currentStage);
     }
 
+
     void Update()
     {
-        if (!isPlayerAlive)
+        if (!isPlayerAlive || currentStage > maxStage || enemySpawnedThisStage >= enemyToSpawnThisStage)
             return;
 
-        if (currentStage <= maxStage && enemySpawnedThisStage < enemyToSpawnThisStage)
-        {
-            currentEnemySpawnDelay += Time.deltaTime;
+        currentEnemySpawnDelay += Time.deltaTime;
 
-            if (currentEnemySpawnDelay > enemySpawnDelay)
+        if (currentEnemySpawnDelay > enemySpawnDelay)
+        {
+            bool isBossTurn = (currentStage % 5 == 0) && (enemySpawnedThisStage == enemyToSpawnThisStage - 1);
+
+            if (isBossTurn)
             {
-                if (aliveEnemies < maxAliveEnemies)
-                {
-                    SpawnEnemyByStage(currentStage);
-                    currentEnemySpawnDelay = 0f;
-                    enemySpawnDelay = Random.Range(0.5f, 2f);
-                }
-            }
-        }
-    }
-
-    void SpawnEnemyByStage(int stage)
-    {
-        GameObject prefabToSpawn = null;
-
-        List<GameObject> possibleEnemy = new List<GameObject>();
-
-        bool spawnBoss = (stage % 5 == 0);
-
-        if (stage == 1 || stage == 2)
-        {
-            possibleEnemy.Add(enemyPrefab1);
-        }
-        else if (stage >= 3 && stage <= 5)
-        {
-            possibleEnemy.Add(enemyPrefab1);
-            possibleEnemy.Add(enemyPrefab2);
-        }
-        else if (stage >= 6 && stage <= 9)
-        {
-            possibleEnemy.Add(enemyPrefab1);
-            possibleEnemy.Add(enemyPrefab2);
-            possibleEnemy.Add(enemyPrefab3);
-        }
-        else // stage 10
-        {
-            possibleEnemy.Add(enemyPrefab1);
-            possibleEnemy.Add(enemyPrefab2);
-            possibleEnemy.Add(enemyPrefab3);
-        }
-
-        if (spawnBoss && enemySpawnedThisStage == enemyToSpawnThisStage - 1)
-        {
-            if (enemySpawnPoints.Length > 4 && bossPrefab != null)
-            {
-                prefabToSpawn = bossPrefab;
-
-                Vector2 offset = Random.insideUnitCircle * 0.3f;
-                Vector3 spawnPos = enemySpawnPoints[4].position + new Vector3(offset.x, offset.y, 0);
-                GameObject boss = Instantiate(prefabToSpawn, spawnPos, Quaternion.identity);
-
-                Enemy enemyScript = boss.GetComponent<Enemy>();
-                if (enemyScript != null)
-                {
-                    enemyScript.spawnManager = this;
-                }
-
-                enemySpawnedThisStage++;
-                aliveEnemies++;
-                Debug.Log($"보스 스폰! 스테이지: {stage}, 위치: {spawnPos}");
-                return;
+                SpawnBoss();
             }
             else
             {
-                Debug.LogError("보스 스폰 실패: 스폰포인트 부족 또는 보스 프리팹 없음");
-                return;
+                SpawnBatch();
             }
-        }
 
-        if (possibleEnemy.Count == 0)
+            currentEnemySpawnDelay = 0f;
+            enemySpawnDelay = Random.Range(1.5f, 3f);
+        }
+    }
+
+
+    void SpawnBatch()
+    {
+        List<Transform> availablePoints = new List<Transform>(enemySpawnPoints);
+        Shuffle(availablePoints);
+
+        int enemiesToSpawnInBatch = Random.Range(1, 3);
+
+        for (int i = 0; i < enemiesToSpawnInBatch; i++)
         {
-            Debug.LogError($"스테이지 {stage}에 스폰할 적이 없습니다!");
-            return;
+            if (i >= availablePoints.Count || aliveEnemies >= maxAliveEnemies || enemySpawnedThisStage >= enemyToSpawnThisStage)
+            {
+                break;
+            }
+
+            Transform spawnPoint = availablePoints[i];
+            SpawnRegularEnemy(spawnPoint);
         }
+    }
 
-        prefabToSpawn = possibleEnemy[Random.Range(0, possibleEnemy.Count)];
 
-        if (prefabToSpawn == null)
-        {
-            Debug.LogError("선택된 적 프리팹이 null입니다!");
-            return;
-        }
+    void SpawnRegularEnemy(Transform spawnPoint)
+    {
+        List<GameObject> possibleEnemy = new List<GameObject>();
+        if (currentStage >= 1 && currentStage <= 2) { possibleEnemy.Add(enemyPrefab1); }
+        else if (currentStage >= 3 && currentStage <= 5) { possibleEnemy.Add(enemyPrefab1); possibleEnemy.Add(enemyPrefab2); }
+        else { possibleEnemy.Add(enemyPrefab1); possibleEnemy.Add(enemyPrefab2); possibleEnemy.Add(enemyPrefab3); }
 
-        Transform spawnPoint = enemySpawnPoints[Random.Range(0, enemySpawnPoints.Length)];
-        Vector2 offsetNormal = Random.insideUnitCircle * 0.3f;
-        Vector3 spawnPosition = spawnPoint.position + new Vector3(offsetNormal.x, offsetNormal.y, 0);
+        if (possibleEnemy.Count == 0) return;
+
+        GameObject prefabToSpawn = possibleEnemy[Random.Range(0, possibleEnemy.Count)];
+        if (prefabToSpawn == null) return;
+
+        Vector2 offset = Random.insideUnitCircle * 0.3f;
+        Vector3 spawnPosition = spawnPoint.position + new Vector3(offset.x, offset.y, 0);
 
         GameObject enemy = Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
-
-        Enemy enemyScriptNormal = enemy.GetComponent<Enemy>();
-        if (enemyScriptNormal != null)
+        Enemy enemyScript = enemy.GetComponent<Enemy>();
+        if (enemyScript != null)
         {
-            enemyScriptNormal.spawnManager = this;
+            enemyScript.spawnManager = this;
         }
 
         enemySpawnedThisStage++;
         aliveEnemies++;
+        Debug.Log($"일반 적 스폰! 스테이지: {currentStage}, 스폰된 수: {enemySpawnedThisStage}/{enemyToSpawnThisStage}");
+    }
 
-        Debug.Log($"적 스폰! 스테이지: {stage}, 스폰된 수: {enemySpawnedThisStage}/{enemyToSpawnThisStage}, 위치: {spawnPosition}");
+
+    void SpawnBoss()
+    {
+        if (enemySpawnPoints.Length > 4 && bossPrefab != null)
+        {
+            Vector2 offset = Random.insideUnitCircle * 0.3f;
+            Vector3 spawnPos = enemySpawnPoints[4].position + new Vector3(offset.x, offset.y, 0); // 5번째 스폰 포인트는 보스 전용
+            GameObject boss = Instantiate(bossPrefab, spawnPos, Quaternion.identity);
+
+            Enemy enemyScript = boss.GetComponent<Enemy>();
+            if (enemyScript != null)
+            {
+                enemyScript.spawnManager = this;
+            }
+
+            enemySpawnedThisStage++;
+            aliveEnemies++;
+            Debug.Log($"보스 스폰! 스테이지: {currentStage}");
+        }
+        else
+        {
+            Debug.LogError("보스 스폰 실패: 스폰포인트 부족(5개 이상 필요) 또는 보스 프리팹 없음");
+        }
+    }
+
+
+    void Shuffle<T>(List<T> list)
+    {
+        for (int i = list.Count - 1; i > 0; i--)
+        {
+            int j = Random.Range(0, i + 1);
+            T temp = list[i];
+            list[i] = list[j];
+            list[j] = temp;
+        }
     }
 
     public void OnEnemyKilled()
@@ -181,10 +180,9 @@ public class EnemySpawnManager : MonoBehaviour
     {
         enemySpawnedThisStage = 0;
         aliveEnemies = 0;
-
-        enemyToSpawnThisStage = 3 + 2 * stage;
-
+        enemyToSpawnThisStage = 3 + 4 * stage;
         bool spawnBoss = (stage % 5 == 0);
+
         if (spawnBoss)
             enemyToSpawnThisStage += 1;
 

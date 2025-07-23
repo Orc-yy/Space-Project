@@ -10,9 +10,7 @@ public class PlayerController : MonoBehaviour
 
     public GameObject explosionEffectPrefab;
     public GameObject bulletPrefab;
-
     public Transform bulletSpawnPoint;
-
     public EnemySpawnManager enemySpawnManager;
 
     public float bulletFireDelay;
@@ -20,18 +18,35 @@ public class PlayerController : MonoBehaviour
     private float playerCurrentHealth;
     public float level;
 
+    public float screenPadding;
+
+    private Camera mainCamera;
+    private Vector2 screenBounds;
 
     void Start()
     {
         rigid = gameObject.GetComponent<Rigidbody2D>();
         playerCurrentHealth = playerHealth;
         StartCoroutine(AutoFireBullet());
+
+        mainCamera = Camera.main;
+        screenBounds = mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, mainCamera.transform.position.z));
     }
 
 
     void Update()
     {
         Move();
+    }
+
+    void LateUpdate()
+    {
+        Vector3 viewPos = transform.position;
+
+        viewPos.x = Mathf.Clamp(viewPos.x, screenBounds.x * -1 + screenPadding, screenBounds.x - screenPadding);
+        viewPos.y = Mathf.Clamp(viewPos.y, screenBounds.y * -1 + screenPadding, screenBounds.y - screenPadding);
+
+        transform.position = viewPos;
     }
 
 
